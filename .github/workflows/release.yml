@@ -1,1 +1,12 @@
+# إنشاء tag للإصدار الأول
+git tag -a v1.0.0 -m "Initial release: V2X Quantum Security Simulator"
 
+# رفع tags إلى GitHub
+git push --tags
+
+# إنشاء Release على GitHub
+# - العنوان: V2X Quantum Security Simulator v1.0.0
+# - الوصف: الإصدار الأولي مع المحاكاة الأساسية، تحليل PQC، ومحاكاة الهجمات الكمية
+# - رفع الملفات: 
+#   * v2x-quantum-security-1.0.0.tar.gz
+#   * v2x-quantum-security-1.0.0-py3-none-any.whl
