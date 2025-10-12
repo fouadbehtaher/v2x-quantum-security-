@@ -9,5 +9,10 @@
     "encryption": "AES-256-GCM",
     "authentication": "SHA3-512",
     "quantum_resistant": true
+  },
+  "network": {
+    "max_vehicles": 100,
+    "max_rsus": 10,
+    "message_types": ["BSM", "SPaT", "MAP"]
   }
 }
