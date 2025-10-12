@@ -1,18 +1,15 @@
-#!/bin/bash
 
-set -e  # Exit on any error
+set -e  
 
 echo "🚀 Setting up V2X Quantum Security Simulation Environment..."
 echo "=========================================================="
 
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+NC='\033[0m' 
 
-# Logging functions
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
@@ -29,11 +26,9 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Check system requirements
 check_requirements() {
     log_info "Checking system requirements..."
     
-    # Check Python
     if command -v python3 &> /dev/null; then
         PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
         log_success "Python $PYTHON_VERSION found"
@@ -42,14 +37,12 @@ check_requirements() {
         exit 1
     fi
     
-    # Check Docker
     if command -v docker &> /dev/null; then
         log_success "Docker found"
     else
         log_warning "Docker not found - some features may be limited"
     fi
     
-    # Check RAM
     TOTAL_RAM=$(free -g | awk '/^Mem:/{print $2}')
     if [ "$TOTAL_RAM" -lt 8 ]; then
         log_warning "Recommended RAM is 8GB+, found ${TOTAL_RAM}GB"
@@ -58,7 +51,6 @@ check_requirements() {
     fi
 }
 
-# Create virtual environment
 create_venv() {
     log_info "Creating Python virtual environment..."
     
@@ -69,17 +61,14 @@ create_venv() {
         log_info "Virtual environment already exists"
     fi
     
-    # Activate virtual environment
     source venv/bin/activate
 }
 
-# Install Python dependencies
 install_dependencies() {
     log_info "Installing Python dependencies..."
     
     pip install --upgrade pip
     
-    # Install core requirements
     if [ -f "requirements.txt" ]; then
         pip install -r requirements.txt
         log_success "Core dependencies installed"
@@ -88,21 +77,17 @@ install_dependencies() {
         exit 1
     fi
     
-    # Install development dependencies (optional)
     if [ -f "requirements-dev.txt" ]; then
         pip install -r requirements-dev.txt
         log_success "Development dependencies installed"
     fi
 }
 
-# Setup quantum computing environment
 setup_quantum_environment() {
     log_info "Setting up quantum computing environment..."
     
-    # Install Qiskit and quantum dependencies
     pip install qiskit qiskit-aer cirq
     
-    # Check if IBM Quantum token is provided
     if [ -n "$IBM_QUANTUM_TOKEN" ]; then
         log_info "Setting up IBM Quantum account..."
         python3 -c "
@@ -115,18 +100,15 @@ QiskitRuntimeService.save_account('$IBM_QUANTUM_TOKEN', overwrite=True)
     fi
 }
 
-# Setup PQC libraries
 setup_pqc_libraries() {
     log_info "Setting up Post-Quantum Cryptography libraries..."
     
-    # Try to install liboqs Python bindings
     if pip install pyoqs; then
         log_success "liboqs Python bindings installed"
     else
         log_warning "Failed to install liboqs Python bindings - using mock implementation"
     fi
     
-    # Clone and build liboqs from source (optional)
     log_info "Building liboqs from source..."
     if [ ! -d "third_party/liboqs" ]; then
         git clone https://github.com/open-quantum-safe/liboqs.git third_party/liboqs
@@ -142,11 +124,9 @@ setup_pqc_libraries() {
     fi
 }
 
-# Setup simulation frameworks
 setup_simulation_frameworks() {
     log_info "Setting up simulation frameworks..."
     
-    # Check for OMNeT++
     if command -v opp_config &> /dev/null; then
         log_success "OMNeT++ found"
     else
@@ -154,7 +134,6 @@ setup_simulation_frameworks() {
         log_info "See docs/deployment/ for installation instructions"
     fi
     
-    # Check for SUMO
     if command -v sumo &> /dev/null; then
         log_success "SUMO found"
     else
@@ -162,7 +141,6 @@ setup_simulation_frameworks() {
     fi
 }
 
-# Build Docker images
 build_docker_images() {
     log_info "Building Docker images..."
     
@@ -174,11 +152,9 @@ build_docker_images() {
     fi
 }
 
-# Run health checks
 run_health_checks() {
     log_info "Running health checks..."
     
-    # Test Python imports
     if python3 -c "
 import numpy, pandas, qiskit
 print('✅ Core imports successful')
@@ -194,7 +170,6 @@ except ImportError:
         exit 1
     fi
     
-    # Test basic functionality
     if python3 -c "
 from src.core.simulation_engine import V2XQuantumSimulationEngine
 print('✅ Simulation engine import successful')
@@ -206,7 +181,6 @@ print('✅ Simulation engine import successful')
     fi
 }
 
-# Create necessary directories
 create_directories() {
     log_info "Creating necessary directories..."
     
@@ -228,7 +202,6 @@ create_directories() {
     done
 }
 
-# Main setup function
 main() {
     echo
     log_info "Starting V2X Quantum Security environment setup..."
@@ -257,5 +230,4 @@ main() {
     echo
 }
 
-# Run main function
 main "$@"
