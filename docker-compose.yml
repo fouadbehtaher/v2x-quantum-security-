@@ -1,1 +1,112 @@
+version: '3.8'
 
+services:
+  v2x-simulator:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.simulator
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./logs:/app/logs
+    environment:
+      - SIMULATION_ENV=docker
+      - LOG_LEVEL=INFO
+    networks:
+      - v2x-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  quantum-simulator:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.quantum
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./data/results:/app/results
+    environment:
+      - QISKIT_TOKEN=${IBM_QUANTUM_TOKEN:-}
+      - QUANTUM_BACKEND=ibmq_qasm_simulator
+    networks:
+      - v2x-network
+    depends_on:
+      - v2x-simulator
+
+  pqc-analyzer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.analyzer
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./data/results:/app/results
+      - ./config:/app/config
+    environment:
+      - ANALYSIS_MODE=comprehensive
+    networks:
+      - v2x-network
+    depends_on:
+      - v2x-simulator
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./assets:/app/assets
+    environment:
+      - DASHBOARD_PORT=8501
+    networks:
+      - v2x-network
+    depends_on:
+      - v2x-simulator
+      - quantum-simulator
+      - pqc-analyzer
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - v2x-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/configs/grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - v2x-network
+    depends_on:
+      - prometheus
+
+networks:
+  v2x-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
