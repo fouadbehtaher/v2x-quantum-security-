@@ -1,0 +1,41 @@
+dashboard:
+  title: "V2X Quantum Security Dashboard"
+  layout: "wide"
+  initial_sidebar_state: "expanded"
+  
+  pages:
+    overview:
+      name: "System Overview"
+      icon: "🏠"
+    quantum_security:
+      name: "Quantum Security"
+      icon: "🔐"
+    simulation:
+      name: "Simulation Results"
+      icon: "📊"
+    analysis:
+      name: "Security Analysis"
+      icon: "📈"
+    configuration:
+      name: "System Configuration"
+      icon: "⚙️"
+
+  refresh:
+    interval: 30
+    enabled: true
+
+  themes:
+    dark:
+      primary_color: "#1f77b4"
+      background_color: "#0e1117"
+      secondary_background_color: "#262730"
+      text_color: "#fafafa"
+    light:
+      primary_color: "#1f77b4"
+      background_color: "#ffffff"
+      secondary_background_color: "#f0f2f6"
+      text_color: "#31333f"
+
+  security:
+    authentication_required: false
+    session_timeout: 3600
