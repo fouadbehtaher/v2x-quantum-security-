@@ -1,1 +1,64 @@
+# إعدادات نظام النقل الذكي في القاهرة
+cairo_smart_traffic:
+  api_endpoint: "https://cairo-traffic-api.gov.eg/v1"
+  api_key: "${CAIRO_TRAFFIC_API_KEY}"
+  update_interval: 30
+  data_sources:
+    - traffic_cameras
+    - road_sensors
+    - gps_tracking
+    - payment_terminals
+  districts:
+    - downtown
+    - nasr_city
+    - heliopolis
+    - maadi
+    - zamalek
+    - dokki
 
+electronic_payment:
+  enabled_systems:
+    - meeza
+    - visa
+    - mastercard
+    - vodafone_cash
+    - orange_money
+  transaction_limits:
+    max_amount: 1000
+    daily_limit: 5000
+    velocity_check: true
+  fraud_detection:
+    enabled: true
+    machine_learning: true
+    real_time_monitoring: true
+
+public_transport:
+  metro:
+    lines: [1, 2, 3]
+    stations: 80
+    smart_gates: true
+  buses:
+    total_routes: 450
+    gps_tracking: true
+    electronic_payment: true
+  river_buses:
+    enabled: true
+    routes: ["maspero-giza", "maspero-manial"]
+
+security:
+  cyber_threat_monitoring: true
+  incident_response_team: true
+  compliance:
+    - egyptian_cyber_security_law
+    - data_protection_law
+    - transport_regulations
+  reporting:
+    ministry_transport: true
+    traffic_police: true
+    cyber_crime_unit: true
+
+monitoring:
+  real_time_alerts: true
+  performance_metrics: true
+  system_health: true
+  backup_systems: true
