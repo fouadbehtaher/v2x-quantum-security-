@@ -1,1 +1,13 @@
-
+{
+  "quantum": {
+    "key_size": 256,
+    "algorithm": "Kyber-1024",
+    "key_refresh_interval": 3600,
+    "max_keys_per_device": 100
+  },
+  "security": {
+    "encryption": "AES-256-GCM",
+    "authentication": "SHA3-512",
+    "quantum_resistant": true
+  }
+}
