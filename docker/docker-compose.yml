@@ -1,1 +1,134 @@
+version: '3.8'
 
+services:
+  # Database
+  database:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../data/processed:/docker-entrypoint-initdb.d
+    networks:
+      - v2x-network
+
+  # Redis
+  redis:
+    image: redis:6-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - v2x-network
+
+  # Quantum Core Service
+  quantum-core:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.quantum
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+    volumes:
+      - ../config:/app/config
+      - ../data:/app/data
+      - ../logs:/app/logs
+    depends_on:
+      - database
+      - redis
+    networks:
+      - v2x-network
+
+  # Simulation Engine
+  simulator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.simulator
+    ports:
+      - "8000:8000"
+    environment:
+      - QUANTUM_CORE_URL=http://quantum-core:8080
+    volumes:
+      - ../config:/app/config
+      - ../data:/app/data
+      - ../scenarios:/app/scenarios
+    depends_on:
+      - quantum-core
+    networks:
+      - v2x-network
+
+  # Analysis Service
+  analyzer:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.analyzer
+    volumes:
+      - ../data:/app/data
+      - ../results:/app/results
+      - ../scripts:/app/scripts
+    depends_on:
+      - database
+    networks:
+      - v2x-network
+
+  # Web Dashboard
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - QUANTUM_CORE_URL=http://quantum-core:8080
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+    volumes:
+      - ../data:/app/data
+      - ../results:/app/results
+      - ../assets:/app/assets
+    depends_on:
+      - quantum-core
+      - analyzer
+    networks:
+      - v2x-network
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - v2x-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - v2x-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  v2x-network:
+    driver: bridge
