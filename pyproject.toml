@@ -1,1 +1,93 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
+[project]
+name = "v2x-quantum-security"
+version = "1.0.0"
+description = "Comprehensive simulation framework for V2X network security in the quantum computing era"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["v2x", "quantum", "security", "cryptography", "simulation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Scientific/Engineering :: Simulation",
+]
+
+dependencies = [
+    "numpy>=1.24.0",
+    "pandas>=2.1.0",
+    "scipy>=1.11.0",
+    "qiskit>=0.44.0",
+    "liboqs-python>=0.8.0",
+    "matplotlib>=3.7.0",
+    "plotly>=5.17.0",
+    "streamlit>=1.28.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "isort>=5.13.0",
+    "flake8>=6.0.0",
+    "mypy>=1.7.0",
+]
+quantum = [
+    "qiskit-aer>=0.12.0",
+    "cirq>=1.2.0",
+]
+simulation = [
+    "veins>=5.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/v2x-quantum-security"
+Documentation = "https://github.com/your-username/v2x-quantum-security/docs"
+Repository = "https://github.com/your-username/v2x-quantum-security"
+"Issue Tracker" = "https://github.com/your-username/v2x-quantum-security/issues"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  | \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v --cov=src --cov-report=html --cov-report=term-missing"
