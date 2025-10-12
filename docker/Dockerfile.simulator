@@ -1,1 +1,15 @@
 
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ /app/src/
+COPY config/ /app/config/
+COPY scenarios/ /app/scenarios/
+
+EXPOSE 8000
+
+CMD ["python", "-m", "src.network.v2x_network", "--config", "/app/config/simulation_config.json"]
