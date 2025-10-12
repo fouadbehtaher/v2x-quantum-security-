@@ -60,3 +60,68 @@ Grover's Algorithm: 56.2% success against AES-128
 
 Migration to PQC: Reduces quantum vulnerability to < 0.1%
 
+📁 Project Structure
+v2x-quantum-security/
+├── src/                 # Source code
+├── tests/              # Test suites
+├── docs/               # Documentation
+├── scripts/            # Utility scripts
+├── config/             # Configuration files
+├── data/               # Data and results
+├── examples/           # Usage examples
+└── docker/             # Containerization
+
+🔬 Research Applications
+This framework supports:
+
+Academic Research: Quantum cryptography, V2X security
+
+Industry Evaluation: PQC migration planning for automotive
+
+Standardization: Contributions to V2X security standards
+
+Education: Quantum computing and cybersecurity courses
+
+
+
+
+Development Setup
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest tests/ -v
+
+# Code formatting
+black src/ tests/
+isort src/ tests/
+
+🙏 Acknowledgments
+NIST for PQC standardization efforts
+
+OMNeT++ & Veins communities for network simulation
+
+Qiskit team for quantum computing tools
+
+Open Quantum Safe project for liboqs
+
+📞 Contact
+Project Maintainer: [FouadTaherFouad]
+
+Email: [fouadbehtaher@gmail.com]
+
+Project Link: https://github.com/fouadbehtaher/v2x-quantum-security
+
+📚 Documentation
+For detailed documentation, visit our docs directory or check out:
+
+API Reference
+
+Deployment Guide
+
+Theory & Background
+
+Tutorials
+
+
+
