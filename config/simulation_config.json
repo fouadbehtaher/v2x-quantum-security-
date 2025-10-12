@@ -1,1 +1,13 @@
-
+{
+  "simulation": {
+    "max_vehicles": 100,
+    "max_rsus": 10,
+    "duration": 3600,
+    "scenario": "highway"
+  },
+  "network": {
+    "message_types": ["BSM", "SPaT", "MAP"],
+    "security_enabled": true,
+    "quantum_protection": true
+  }
+}
