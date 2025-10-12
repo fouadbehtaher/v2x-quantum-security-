@@ -1,13 +1,16 @@
 {
   "simulation": {
-    "max_vehicles": 100,
-    "max_rsus": 10,
     "duration": 3600,
-    "scenario": "highway"
+    "time_step": 0.1,
+    "scenarios": ["highway", "urban", "city_center"]
   },
-  "network": {
-    "message_types": ["BSM", "SPaT", "MAP"],
-    "security_enabled": true,
-    "quantum_protection": true
+  "vehicles": {
+    "min_count": 10,
+    "max_count": 100,
+    "behavior_models": ["aggressive", "normal", "cautious"]
+  },
+  "security": {
+    "enable_quantum": true,
+    "attack_scenarios": ["eavesdropping", "mitm", "replay"]
   }
 }
