@@ -18,6 +18,12 @@ A comprehensive simulation framework for analyzing V2X network security in the q
 - **Hybrid Security Models**: Evaluate classical + quantum-resistant cryptographic systems
 - **Extensible Architecture**: Modular design for custom scenarios and algorithms
 
+## Current status
+
+![What the code connects](docs/images/v2x-code-map.png)
+
+Only 3 of the 30 files in `src/` have content (the simulation engine, the PQC manager and the Streamlit dashboard). The other modules the engine imports are empty files, and all test files are empty, so the simulation cannot run as committed. The figures under "Example Results" come from `docs/research/paper.md`; no code or data in this repository reproduces them. The dashboard screenshot shows values typed into `src/ui/dashboard.py`, not simulation output.
+
 ## 🏗️ Architecture
 ┌─────────────────────────────────────────────────────────────┐
 │ V2X Quantum Security Framework │
