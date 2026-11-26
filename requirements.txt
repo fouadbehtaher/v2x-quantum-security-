@@ -1,21 +1,20 @@
 # Core Dependencies
-python>=3.11
+# Python 3.11+ is required (not a pip package).
 
 # Simulation Framework
-omnetpp==6.0.1
-veins==5.2
-sumo==1.15.0
+# OMNeT++, Veins and SUMO are system software, not pip packages: see README "System dependencies".
+# (The PyPI package named "sumo" is an unrelated solid-state physics tool.)
 
 # Quantum Computing
-qiskit==0.44.0
+qiskit==0.44.1
 qiskit-aer==0.12.0
 qiskit-ibm-runtime==0.12.0
 cirq==1.2.0
 
 # Post-Quantum Cryptography
-liboqs-python==0.8.0
+# liboqs-python==0.8.0 is not on PyPI (only 0.16.x); optional, src/crypto/pqc_manager.py falls back to a mock without it.
 pqcrypto==1.0.0
-openssl==3.0.0
+# OpenSSL is a system library, not a pip package.
 
 # Data Processing & Analysis
 numpy==1.24.3
