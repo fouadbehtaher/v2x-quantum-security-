@@ -6,7 +6,6 @@ Comprehensive simulation framework for V2X network security in the quantum compu
 ![OMNeT++](https://img.shields.io/badge/OMNeT++-6.0+-orange)
 ![Qiskit](https://img.shields.io/badge/Qiskit-0.44+-purple)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Build](https://img.shields.io/badge/Build-Passing-brightgreen)
 
 A comprehensive simulation framework for analyzing V2X network security in the quantum computing era. This project evaluates Post-Quantum Cryptography (PQC) algorithms, simulates quantum attacks, and provides migration strategies for automotive security.
 
