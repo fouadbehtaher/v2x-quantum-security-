@@ -43,6 +43,7 @@ class PQCPerformance:
     ciphertext_size: int
     signature_size: int
     security_level: int  # bits of security
+    measured: bool = True  # False: placeholder numbers from the mock fallback, not a benchmark
 
 @dataclass
 class CryptoAnalysis:
@@ -239,7 +240,7 @@ class PQCManager:
         return await self._benchmark_signature(algorithm, message_sizes)
     
     async def _mock_benchmark(self, algorithm: PQCAlgorithm, message_sizes: List[int]) -> PQCPerformance:
-        """Mock benchmark for testing without liboqs"""
+        """Placeholder numbers used without liboqs. Results carry measured=False: they are not a benchmark."""
         # Simulate realistic performance characteristics
         base_times = {
             PQCAlgorithm.KYBER512: (0.001, 0.0005, 0.0006, 0.0, 0.0),
@@ -263,7 +264,8 @@ class PQCManager:
             private_key_size=1600,
             ciphertext_size=768,
             signature_size=2000,
-            security_level=self._get_security_level(algorithm.value)
+            security_level=self._get_security_level(algorithm.value),
+            measured=False
         )
     
     def _get_security_level(self, algorithm: str) -> int:
@@ -474,7 +476,8 @@ class PQCManager:
                 'private_key_size': perf.private_key_size,
                 'ciphertext_size': perf.ciphertext_size,
                 'signature_size': perf.signature_size,
-                'security_level': perf.security_level
+                'security_level': perf.security_level,
+                'measured': perf.measured
             }
         
         timestamp = int(time.time())
