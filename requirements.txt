@@ -9,7 +9,9 @@
 qiskit==0.44.1
 qiskit-aer==0.12.0
 qiskit-ibm-runtime==0.12.0
-cirq==1.2.0
+# cirq-core (not the cirq meta package): cirq 1.2.0 pulls cirq-rigetti -> pyquil -> pydantic<2, which conflicts with pydantic==2.5.0 (fastapi stack).
+# Nothing in src/ imports cirq; the vendor backends (rigetti, aqt, google, ionq, pasqal) are not installed.
+cirq-core==1.2.0
 
 # Post-Quantum Cryptography
 # liboqs-python==0.8.0 is not on PyPI (only 0.16.x); optional, src/crypto/pqc_manager.py falls back to a mock without it.
@@ -46,6 +48,9 @@ python-dotenv==1.0.0
 fastapi==0.104.1
 uvicorn==0.24.0
 pydantic==2.5.0
+# Pins added so imports work with numpy==1.24.3 / qiskit-ibm-runtime 0.12.0 (resolver otherwise picks pyarrow needing numpy 2, and setuptools without pkg_resources).
+pyarrow<16
+setuptools<81
 requests==2.31.0
 
 # Monitoring
