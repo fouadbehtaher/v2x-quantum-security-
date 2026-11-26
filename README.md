@@ -17,6 +17,12 @@ A comprehensive simulation framework for analyzing V2X network security in the q
 - **Hybrid Security Models**: Evaluate classical + quantum-resistant cryptographic systems
 - **Extensible Architecture**: Modular design for custom scenarios and algorithms
 
+## System dependencies and execution state
+
+`requirements.txt` lists only installable pip packages. These are installed separately, not through pip: OMNeT++ 6.0+, the Veins framework, SUMO and OpenSSL. `liboqs-python==0.8.0` was removed because that version is not on PyPI; the PQC manager falls back to a mock without it.
+
+The four workflows in `.github/workflows` are unchanged. This repo has no tests with content (all test files are empty), so a green CI run would not prove the simulation works. `qiskit` was pinned to 0.44.1 because `qiskit-ibm-runtime==0.12.0` requires `qiskit>=0.44.1`. A full `pip install -r requirements.txt` resolve was not completed here, so other conflicts may remain.
+
 ## Current status
 
 ![What the code connects](docs/images/v2x-code-map.png)
